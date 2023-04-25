@@ -2,6 +2,8 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../Provider/AuthProvider";
 
+import { ToastContainer, toast } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
 const Register = () => {
   const { user , createUser} = useContext(AuthContext);
 
@@ -14,17 +16,31 @@ const Register = () => {
     const email = form.email.value;
     const password = form.password.value;
     console.log(name,email, password)
-
+      
     // Create User email and password setup auth firebase
     createUser(email,password)
     .then(result => {
         const logged = result.user;
         console.log(logged)
-        form.reset();
+        
+        
     })
     .catch(error => {
-        console.log(error)
+   
     })
+    if(!email) {
+      toast.error("Please Your Email Submit") 
+      return; 
+    }
+   else if (password.length < 8){
+      toast.error("Your password must be at least 8 characters!!")  
+      return;
+    }
+    else{
+      toast.success("Register SuccessFul !!")
+      form.reset();
+      return;
+    }
   
   }
   return (
@@ -94,6 +110,7 @@ const Register = () => {
           Don't have an account?
           <Link to="/login">Sign up</Link>
         </p>
+        <ToastContainer />
       </div>
     </div>
   );

@@ -2,6 +2,8 @@ import React, { useContext } from 'react';
 import './Login.css'
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../Provider/AuthProvider';
+import { ToastContainer, toast } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
 const Login = () => {
     const {signIn} = useContext(AuthContext)
 const handleSignIn = (event) => {
@@ -15,10 +17,13 @@ const handleSignIn = (event) => {
             const logged = result.user;
             console.log(logged)
             form.reset();
-
+			toast.success("Login SuccessFul !!")
+			return;
         })
         .catch(error => {
             console.log(error)
+			toast.error("Please Try Again !!")
+
         })
 }
 
@@ -66,6 +71,7 @@ const handleSignIn = (event) => {
 	<Link to="/register">Sign Up</Link>
 	</p>
 </div>
+<ToastContainer />
         </div>
     );
 };
