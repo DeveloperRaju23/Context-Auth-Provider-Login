@@ -1,30 +1,45 @@
 import React, { useContext } from 'react';
 import './Login.css'
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../Provider/AuthProvider';
 import { ToastContainer, toast } from 'react-toastify';
   import 'react-toastify/dist/ReactToastify.css';
+  import load from "../../assets/loading.png"
 const Login = () => {
-    const {signIn} = useContext(AuthContext)
+    const {signIn,loading} = useContext(AuthContext)
+	const navigate =  useNavigate()
+	const location  = useLocation()
+	if(loading){
+        return <div className='bg-black h-screen pt-40'>
+ <img className='animate-spin h-20   mx-auto ' src={load} alt="" />	
+		</div>
+    }
+	
+	const from = location.state?.from?.pathname || '/';
 const handleSignIn = (event) => {
     event.preventDefault()
     const form = event.target;
     const email = form.email.value;
     const password = form.password.value;
         console.log(email,password)
+		
         signIn(email, password)
         .then(result => {
             const logged = result.user;
             console.log(logged)
             form.reset();
-			toast.success("Login SuccessFul !!")
+			navigate(from, {replace:true})	
+			if(email === password){
+				toast.success("Login SuccessFul !!")	
+			}
 			return;
         })
         .catch(error => {
             console.log(error)
-			toast.error("Please Try Again !!")
+			toast.error("Incorrect Information")
 
         })
+		
 }
 
     return (

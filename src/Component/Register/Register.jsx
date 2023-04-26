@@ -1,13 +1,15 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../Provider/AuthProvider";
-
+import load from "../../assets/loading.png"
 import { ToastContainer, toast } from 'react-toastify';
   import 'react-toastify/dist/ReactToastify.css';
 const Register = () => {
-  const { user , createUser} = useContext(AuthContext);
+  const { user , createUser,loading} = useContext(AuthContext);
 
-    
+  if(loading){
+    return  <img className='animate-spin' src={load} alt="" />
+} 
 
   const handleRegister = (event) => {
     event.preventDefault()
